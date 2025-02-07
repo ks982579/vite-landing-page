@@ -1,35 +1,101 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// import { useState } from "react";
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
+import React, { Dispatch, JSX, SetStateAction, useState } from "react";
+import "./App.css";
+import { Box, Container, Paper, TextField, Typography } from "@mui/material";
 
+// TODO: Add to types area
+type JSXNode = JSX.Element | null;
+
+interface LoginFormData {
+  email: string;
+  password: string;
+}
+
+interface LoginFormProps {
+  onSubmit: (data: LoginFormData) => void;
+}
+
+function LoginForm({ onSubmit }: LoginFormProps): JSXNode {
+  // Overly explicit
+  const [formData, setFormData]: [
+    LoginFormData,
+    Dispatch<SetStateAction<LoginFormData>>,
+  ] = useState<LoginFormData>({
+    email: "",
+    password: "",
+  });
+
+  const handleChange: React.ChangeEventHandler = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData((prev: LoginFormData) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit: React.FormEventHandler = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
+  // Container centers content horizontally = MOST BASIC LAYOUT ELEMENT
+  // Paper displayes elements on *elevated* surface
+  // Box is generic Theme-aware container
+  return (
+    <Container maxWidth="sm">
+      <Paper elevation={2} sx={{ p: 4, mt: 8 }}>
+        <Typography variant="h3" component="h3" sx={{ border: 1 }}>
+          Login
+          <Box component="form" onSubmit={handleSubmit}>
+            <TextField
+              fullWidth
+              required
+              error
+              helperText="Incorrect Entry"
+              margin="normal"
+              label="E-mail"
+              name="email"
+              type="email"
+              autoComplete="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            <TextField
+              fullWidth
+              required
+              margin="normal"
+              label="Password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+          </Box>
+        </Typography>
+      </Paper>
+    </Container>
+  );
+}
+
+// hoisted
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0);
+  const thing = () => {
+    console.log("thing");
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>Welcome Home</h1>
+      <LoginForm onSubmit={thing} />
+      <div></div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
