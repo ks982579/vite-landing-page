@@ -38,10 +38,14 @@ src:
 
 - Material UI = `@mui/material` `@emotion/styled` `@emotion/react`
 
-## Material UI
+### Material UI
 
 - [ReactGo.com](https://reactgo.com/material-ui-react-tutorial/);
 - [MUI.com/learn](https://mui.com/material-ui/getting-started/learn/);
+
+### Axios
+
+- [GeeksForGeeks | Axios](https://www.geeksforgeeks.org/axios-in-react-a-guide-for-beginners/)
 
 ## Expanding the ESLint configuration
 
