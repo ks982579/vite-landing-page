@@ -1,4 +1,4 @@
-import { getPassengerData } from "@/services/userdata";
+import { getPassengersData } from "@/services/userdata";
 import React, { useEffect } from "react";
 import Cookies from "js-cookie";
 import { useNavigate, NavigateFunction } from "react-router";
@@ -9,11 +9,12 @@ function Dashboard(): React.JSX.Element {
   // And conditionally loaded... or not
   const navigate: NavigateFunction = useNavigate();
 
+  // TODO: Should be a protection thing
   useEffect(() => {
     if (!Cookies.get("accessToken")) {
       navigate("/");
     } else {
-      getPassengerData({ thing: 1 });
+      getPassengersData({ thing: 1 });
     }
   });
 

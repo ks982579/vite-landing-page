@@ -22,6 +22,7 @@ import {
 import postAuthRequest from "./services/authenticate";
 import Cookies from "js-cookie";
 import { NavigateFunction, useNavigate } from "react-router";
+import Navbar from "./components/Navbar";
 
 // TODO: Add to types area
 type JSXNode = JSX.Element | null;
@@ -129,6 +130,7 @@ function App() {
 
   return (
     <>
+      <Navbar />
       <h1>Welcome Home</h1>
       <LoginForm onSubmit={logInSubmit} />
     </>
