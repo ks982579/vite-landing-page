@@ -34,6 +34,9 @@ src:
   - utils: "Contains shared utility functions"
 ```
 
+- [WebDevSimplified](https://blog.webdevsimplified.com/2022-07/react-folder-structure/)
+- [Medium by Kthamodaran](https://medium.com/@kthamodaran/react-8-best-practices-folder-structure-5dbda48a69e)
+
 ## Imports into Project
 
 - Material UI = `@mui/material` `@emotion/styled` `@emotion/react`
@@ -46,6 +49,11 @@ src:
 ### Axios
 
 - [GeeksForGeeks | Axios](https://www.geeksforgeeks.org/axios-in-react-a-guide-for-beginners/)
+- [Axios-HTTP.com | docs](https://axios-http.com/docs/intro)
+
+### Cookies
+
+- [JS Cookie](https://www.npmjs.com/package/js-cookie)
 
 ## Expanding the ESLint configuration
 

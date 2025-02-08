@@ -1,13 +1,32 @@
 // import { useState } from "react";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
-import React, { Dispatch, JSX, SetStateAction, useState } from "react";
+import React, {
+  Dispatch,
+  // EffectCallback,
+  JSX,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import "./App.css";
-import { Box, Container, Paper, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
+// import axios, { AxiosResponse } from "axios";
+import postAuthRequest from "./services/authenticate";
+import Cookies from "js-cookie";
+import { NavigateFunction, useNavigate } from "react-router";
 
 // TODO: Add to types area
 type JSXNode = JSX.Element | null;
 
+// Used in Services...
 interface LoginFormData {
   email: string;
   password: string;
@@ -16,6 +35,8 @@ interface LoginFormData {
 interface LoginFormProps {
   onSubmit: (data: LoginFormData) => void;
 }
+
+type LoginRequestFunction = (data: LoginFormData) => void;
 
 function LoginForm({ onSubmit }: LoginFormProps): JSXNode {
   // Overly explicit
@@ -54,8 +75,8 @@ function LoginForm({ onSubmit }: LoginFormProps): JSXNode {
             <TextField
               fullWidth
               required
-              error
-              helperText="Incorrect Entry"
+              // error
+              // helperText="Incorrect Entry"
               margin="normal"
               label="E-mail"
               name="email"
@@ -75,6 +96,11 @@ function LoginForm({ onSubmit }: LoginFormProps): JSXNode {
               value={formData.password}
               onChange={handleChange}
             />
+            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+              <Button type="submit" variant="contained" sx={{ mr: 2 }}>
+                Log In
+              </Button>
+            </Box>
           </Box>
         </Typography>
       </Paper>
@@ -85,15 +111,26 @@ function LoginForm({ onSubmit }: LoginFormProps): JSXNode {
 // hoisted
 function App() {
   // const [count, setCount] = useState(0);
-  const thing = () => {
-    console.log("thing");
+  let navigate: NavigateFunction = useNavigate();
+
+  useEffect(() => {
+    if (Cookies.get("accessToken")) {
+      navigate("/dashboard");
+    }
+    return () => { };
+  }, []);
+
+  const logInSubmit: LoginRequestFunction = (data: LoginFormData) => {
+    console.log("Calling Login Submit");
+    // TODO: Clean DATA!
+    // TODO: Get and check response?
+    postAuthRequest(data);
   };
 
   return (
     <>
       <h1>Welcome Home</h1>
-      <LoginForm onSubmit={thing} />
-      <div></div>
+      <LoginForm onSubmit={logInSubmit} />
     </>
   );
 }
