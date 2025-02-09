@@ -69,8 +69,8 @@ function LoginForm({ onSubmit }: LoginFormProps): JSXNode {
   // Box is generic Theme-aware container
   return (
     <Container maxWidth="sm">
-      <Paper elevation={2} sx={{ p: 4, mt: 8 }}>
-        <Typography variant="h3" component="h3" sx={{ border: 1 }}>
+      <Paper elevation={12} sx={{ p: 4, mt: 8, borderRadius: 3 }}>
+        <Typography variant="h4" component="h4" sx={{ border: 1 }}>
           Login
           <Box component="form" onSubmit={handleSubmit}>
             <TextField
@@ -111,29 +111,45 @@ function LoginForm({ onSubmit }: LoginFormProps): JSXNode {
 
 // hoisted
 function App() {
-  // const [count, setCount] = useState(0);
+  const [loggedIn, setLoggedIn]: [boolean, Dispatch<SetStateAction<boolean>>] =
+    useState<boolean>(false);
   let navigate: NavigateFunction = useNavigate();
 
   useEffect(() => {
+    // Maybe checked loggedIn at some point.
+    // Needs this flexability for keeping state
     if (Cookies.get("accessToken")) {
       navigate("/dashboard");
     }
     return () => { };
-  }, []);
+  }, [navigate, loggedIn]);
 
-  const logInSubmit: LoginRequestFunction = (data: LoginFormData) => {
+  // Handling request to log in with credentials.
+  const logInSubmit: LoginRequestFunction = async (data: LoginFormData) => {
     console.log("Calling Login Submit");
     // TODO: Clean DATA!
     // TODO: Get and check response?
-    postAuthRequest(data);
+    const res = await postAuthRequest(data);
+    console.log(res);
+    switch (res.type) {
+      case "ok":
+        console.log(res.value.status);
+        setLoggedIn(true);
+        break;
+      case "err":
+        // Either Raise an Alert or invalid credentials
+        console.log(res.error.status);
+        // unknown errror please try again later or contact system administrator
+        break;
+    }
   };
 
   return (
-    <>
+    <Container>
       <Navbar />
       <h1>Welcome Home</h1>
       <LoginForm onSubmit={logInSubmit} />
-    </>
+    </Container>
   );
 }
 
