@@ -1,9 +1,14 @@
-import { getPassengersData } from "@/services/userdata";
+import { getPassengersData, getTripsData } from "@/services/userdata";
 import React, { useEffect } from "react";
 import Cookies from "js-cookie";
 import { useNavigate, NavigateFunction } from "react-router";
 import { Box, Button, Container, Paper, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
+import axios, { AxiosResponse, AxiosError } from "axios";
+import { Result, Ok, Err } from "@/types/result";
+import { Passenger } from "@/types/passenger";
+import { Trip } from "@/types/trip";
+import { GenericResponseError } from "@/types";
 
 function Dashboard(): React.JSX.Element {
   // Check and Reroute to home screen
@@ -16,7 +21,12 @@ function Dashboard(): React.JSX.Element {
     if (!Cookies.get("accessToken")) {
       navigate("/");
     } else {
-      getPassengersData({ thing: 1 });
+      const passengerPromise: Promise<
+        Result<AxiosResponse<Passenger>, AxiosError<GenericResponseError>>
+      > = getPassengersData();
+      const tripPromise: Promise<
+        Result<AxiosResponse<Trip>, AxiosError<GenericResponseError>>
+      > = getTripsData();
     }
   }, []);
 

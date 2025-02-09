@@ -144,6 +144,7 @@ function App() {
     }
   };
 
+  // TODO: Center the LoginForm
   return (
     <Container>
       <Navbar />
