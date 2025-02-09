@@ -1,3 +1,7 @@
+export interface PassengerList {
+  passengers: Array<Passenger>;
+}
+
 export interface Passenger {
   passengerId: string;
   userId: string;

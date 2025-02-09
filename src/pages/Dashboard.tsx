@@ -9,6 +9,8 @@ import { Result, Ok, Err } from "@/types/result";
 import { Passenger } from "@/types/passenger";
 import { Trip } from "@/types/trip";
 import { GenericResponseError } from "@/types";
+import PassengersBox from "@/features/dashboard/components/PassengersBox";
+import TripsBox from "@/features/dashboard/components/TripsBox";
 
 function Dashboard(): React.JSX.Element {
   // Check and Reroute to home screen
@@ -17,19 +19,20 @@ function Dashboard(): React.JSX.Element {
   const navigate: NavigateFunction = useNavigate();
 
   // TODO: Should be a protection thing
-  useEffect(() => {
-    if (!Cookies.get("accessToken")) {
-      navigate("/");
-    } else {
-      const passengerPromise: Promise<
-        Result<AxiosResponse<Passenger>, AxiosError<GenericResponseError>>
-      > = getPassengersData();
-      const tripPromise: Promise<
-        Result<AxiosResponse<Trip>, AxiosError<GenericResponseError>>
-      > = getTripsData();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!Cookies.get("accessToken")) {
+  //     navigate("/");
+  //   } else {
+  //     const passengerPromise: Promise<
+  //       Result<AxiosResponse<Passenger>, AxiosError<GenericResponseError>>
+  //     > = getPassengersData();
+  //     const tripPromise: Promise<
+  //       Result<AxiosResponse<Trip>, AxiosError<GenericResponseError>>
+  //     > = getTripsData();
+  //   }
+  // }, []);
 
+  // Probably also center horizontally on screen or something
   return (
     <Container>
       <Typography
@@ -48,42 +51,8 @@ function Dashboard(): React.JSX.Element {
           gap: 3,
         }}
       >
-        {["Passengers", "Trips"].map((ser) => (
-          <Paper elevation={5} sx={{ width: { xs: 1 } }}>
-            <Box sx={{ m: 2 }}>
-              <Typography variant="h4">{ser}</Typography>
-              <Typography sx={{ mt: 2 }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
-              </Typography>
-              <Button
-                variant="text"
-                // color="secondary"
-                sx={{
-                  // bgcolor: deepPurple[50],
-                  textTransform: "capitalize",
-                  borderRadius: 2,
-                  ":hover": { bgcolor: deepPurple[100] },
-                }}
-              >
-                More Info
-              </Button>
-            </Box>
-          </Paper>
-          // <Paper elevation={5}>
-          //   <Box sx={{ m: 2 }}>
-          //     <Typography variant="h4">Trips</Typography>
-          //     <Typography sx={{ mt: 2 }}>
-          //       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          //       eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-          //       enim ad minim veniam, quis nostrud exercitation ullamco laboris
-          //       nisi ut aliquip ex ea commodo consequat.
-          //     </Typography>
-          //   </Box>
-          // </Paper>
-        ))}
+        <PassengersBox />
+        <TripsBox />
       </Box>
     </Container>
   );

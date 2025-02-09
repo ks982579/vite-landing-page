@@ -1,12 +1,13 @@
 import axios, { AxiosResponse, AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { Result, Ok, Err } from "@/types/result";
-import { Passenger } from "@/types/passenger";
-import { Trip } from "@/types/trip";
+import { Passenger, PassengerList } from "@/types/passenger";
+import { Trip, TripList } from "@/types/trip";
 import { GenericResponseError } from "@/types";
 
 async function getDataFrom<T, E>(
   url: string,
+  signal?: AbortSignal,
 ): Promise<Result<AxiosResponse<T>, AxiosError<E>>> {
   console.log(`Making GET request to: ${url}`);
   try {
@@ -19,6 +20,7 @@ async function getDataFrom<T, E>(
           "x-api-key": "Zgz4NhoIqZ1PJ6vw49K9N9hdWB7dGnWD29kXxg7X",
           Authorization: `Bearer ${Cookies.get("accessToken")}`,
         },
+        signal,
       }, // CONFIG
     );
     console.log("OK Submission");
@@ -40,18 +42,22 @@ async function getDataFrom<T, E>(
   }
 }
 
-export async function getPassengersData(): Promise<
-  Result<AxiosResponse<Passenger>, AxiosError<GenericResponseError>>
+export async function getPassengersData(
+  signal: AbortSignal,
+): Promise<
+  Result<AxiosResponse<PassengerList>, AxiosError<GenericResponseError>>
 > {
-  return getDataFrom<Passenger, GenericResponseError>(
+  return getDataFrom<PassengerList, GenericResponseError>(
     "https://sandbox.blinkapi.co/v1/travel/passengers",
+    signal,
   );
 }
 
-export async function getTripsData(): Promise<
-  Result<AxiosResponse<Trip>, AxiosError<GenericResponseError>>
-> {
-  return getDataFrom<Trip, GenericResponseError>(
+export async function getTripsData(
+  signal: AbortSignal,
+): Promise<Result<AxiosResponse<TripList>, AxiosError<GenericResponseError>>> {
+  return getDataFrom<TripList, GenericResponseError>(
     "https://sandbox.blinkapi.co/v1/travel/trips",
+    signal,
   );
 }
