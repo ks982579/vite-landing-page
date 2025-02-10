@@ -16,7 +16,7 @@ function Dashboard(): React.JSX.Element {
   // Check and Reroute to home screen
   // State of being loaded or not
   // And conditionally loaded... or not
-  const navigate: NavigateFunction = useNavigate();
+  // const navigate: NavigateFunction = useNavigate();
 
   // TODO: Should be a protection thing
   // useEffect(() => {
