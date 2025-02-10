@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Paper, Box, Typography, Button } from "@mui/material";
 import { Passenger, PassengerList } from "@/types/passenger";
 import { getPassengersData } from "@/services/userdata";
 import { Result, GenericResponseError } from "@/types";
 import { AxiosError, AxiosResponse } from "axios";
+import { AuthContext, AuthContextType } from "@/context/AuthContext";
 
 interface PassengerChipProps {
   data: Passenger;
@@ -40,26 +41,34 @@ const PassengerChip: React.FC<PassengerChipProps> = ({ data }) => {
 export default function PassengersBox(): React.JSX.Element {
   // Loading???
   const [passengers, setPassengers] = useState<Array<Passenger> | null>(null);
+  const user: AuthContextType = useContext(AuthContext) as AuthContextType;
+
   // Make API Call HERE
   useEffect(() => {
     const controller = new AbortController();
-    (async () => {
-      const passengerRes: Result<
-        AxiosResponse<PassengerList>,
-        AxiosError<GenericResponseError>
-      > = await getPassengersData(controller.signal);
+    if (user.isLoggedIn) {
+      (async () => {
+        const passengerRes: Result<
+          AxiosResponse<PassengerList>,
+          AxiosError<GenericResponseError>
+        > = await getPassengersData(controller.signal);
 
-      switch (passengerRes.type) {
-        case "ok":
-          setPassengers(passengerRes.value.data.passengers);
-          break;
-        case "err":
-          // Check Why / maybe try again.
-          break;
-      }
-    })();
+        switch (passengerRes.type) {
+          case "ok":
+            setPassengers(passengerRes.value.data.passengers);
+            break;
+          case "err":
+            // Check Why / maybe try again.
+            // 401 -> Cookie expired
+            if (passengerRes.error.status === 401) {
+              user.logout();
+            } // else display error
+            break;
+        }
+      })();
+    }
     return () => controller.abort();
-  }, []);
+  }, [user.isLoggedIn]);
 
   return (
     <Paper elevation={5} sx={{ width: { xs: 1 } }}>

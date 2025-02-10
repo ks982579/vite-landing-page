@@ -13,7 +13,6 @@ import { LoginFormData, LoginFormProps } from "../types";
 // type LoginRequestFunction = (data: LoginFormData) => void;
 
 export default function LoginForm({ onSubmit }: LoginFormProps): JSXNode {
-  // Overly explicit
   const [formData, setFormData]: [
     LoginFormData,
     Dispatch<SetStateAction<LoginFormData>>,

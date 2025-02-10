@@ -1,10 +1,11 @@
 import { Trip, TripList } from "@/types/trip";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Paper, Box, Typography, Button } from "@mui/material";
 import { Passenger, PassengerList } from "@/types/passenger";
 import { getPassengersData, getTripsData } from "@/services/userdata";
 import { Result, GenericResponseError } from "@/types";
 import { AxiosError, AxiosResponse } from "axios";
+import { AuthContextType, AuthContext } from "@/context/AuthContext";
 
 interface TripChipProps {
   data: Trip;
@@ -40,26 +41,31 @@ const TripsChip: React.FC<TripChipProps> = ({ data }) => {
 
 export default function TripsBox(): React.JSX.Element {
   const [trips, setTrips] = useState<Array<Trip> | null>(null);
+  const user: AuthContextType = useContext(AuthContext) as AuthContextType;
 
   useEffect(() => {
     const controller = new AbortController();
-    (async () => {
-      const tripRes: Result<
-        AxiosResponse<TripList>,
-        AxiosError<GenericResponseError>
-      > = await getTripsData(controller.signal);
+    if (user.isLoggedIn) {
+      (async () => {
+        const tripRes: Result<
+          AxiosResponse<TripList>,
+          AxiosError<GenericResponseError>
+        > = await getTripsData(controller.signal);
 
-      switch (tripRes.type) {
-        case "ok":
-          setTrips(tripRes.value.data.trips);
-          break;
-        case "err":
-          // Check Why / maybe try again.
-          break;
-      }
-    })();
+        switch (tripRes.type) {
+          case "ok":
+            setTrips(tripRes.value.data.trips);
+            break;
+          case "err":
+            if (tripRes.error.status === 401) {
+              user.logout();
+            } // else display error
+            break;
+        }
+      })();
+    }
     return () => controller.abort();
-  }, []);
+  }, [user.isLoggedIn]);
 
   return (
     <Paper elevation={5} sx={{ width: { xs: 1 } }}>
