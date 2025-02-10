@@ -13,6 +13,8 @@ import {
   Avatar,
   Collapse,
   Divider,
+  CircularProgress,
+  List,
 } from "@mui/material";
 import { getTripsData } from "@/services/userdata";
 import { Result, GenericResponseError } from "@/types";
@@ -148,6 +150,7 @@ const TripItem: React.FC<TripItemProps> = ({ data }) => {
 
 export default function TripsBox(): React.JSX.Element {
   const [trips, setTrips] = useState<Array<Trip> | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const user: AuthContextType = useContext(AuthContext) as AuthContextType;
 
   useEffect(() => {
@@ -169,6 +172,7 @@ export default function TripsBox(): React.JSX.Element {
             } // else display error
             break;
         }
+        setIsLoading(false);
       })();
     }
     return () => controller.abort();
@@ -184,10 +188,31 @@ export default function TripsBox(): React.JSX.Element {
         overflow: "scroll",
       }}
     >
-      {trips &&
-        trips.map((trip) => {
-          return <TripItem data={trip} key={trip.tripId} />;
-        })}
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            width: "100%",
+            bgcolor: "rgba(255,255,255, 0.75)",
+          }}
+        >
+          <CircularProgress size="20%" />
+        </Box>
+      ) : trips && trips.length > 0 ? (
+        <List disablePadding>
+          {trips &&
+            trips.map((trip) => {
+              return <TripItem data={trip} key={trip.tripId} />;
+            })}
+        </List>
+      ) : (
+        <Box sx={{ p: 3, textAlign: "center" }}>
+          <Typography>No Trips Found</Typography>
+        </Box>
+      )}
     </Paper>
   );
 }
