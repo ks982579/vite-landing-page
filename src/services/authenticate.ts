@@ -2,6 +2,7 @@
 import axios, { AxiosResponse, AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { Result, Ok, Err } from "@/types/result";
+import { LoginFormData } from "@/features/auth/types";
 
 interface User {
   read: boolean;
@@ -38,10 +39,10 @@ interface LoginErrorResponse {
 }
 
 // Used in <App />
-interface LoginFormData {
-  email: string;
-  password: string;
-}
+// interface LoginFormData {
+//   email: string;
+//   password: string;
+// }
 
 async function postAuthRequest(
   data: LoginFormData,

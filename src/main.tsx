@@ -1,9 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import "./index.css";
-import App from "./App.tsx";
-import Dashboard from "./pages/Dashboard.tsx";
+import AppRouter from "./AppRouter.tsx";
 import {
   createTheme,
   CssBaseline,
@@ -12,15 +11,6 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import { green } from "@mui/material/colors";
-
-function PageNotFound404(): React.JSX.Element {
-  // Check and Reroute to home screen
-  return (
-    <div>
-      <h1>404 Page Not Found</h1>
-    </div>
-  );
-}
 
 // https://zenoo.github.io/mui-theme-creator/
 const normalThemeOptions: ThemeOptions = {
@@ -59,12 +49,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <ThemeProvider theme={normalTheme}>
       <CssBaseline>
         <BrowserRouter>
-          {/* Probably move to App? */}
-          <Routes>
-            <Route path="/" element={<App />} />
-            <Route path="/dashboard/" element={<Dashboard />} />
-            <Route path="*" element={<PageNotFound404 />} />
-          </Routes>
+          <AppRouter />
         </BrowserRouter>
       </CssBaseline>
     </ThemeProvider>

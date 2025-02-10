@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import {
   Box,
   Button,
@@ -8,18 +8,9 @@ import {
   Typography,
 } from "@mui/material";
 import { JSXNode } from "@/types";
+import { LoginFormData, LoginFormProps } from "../types";
 
-// Used in Services...
-interface LoginFormData {
-  email: string;
-  password: string;
-}
-
-interface LoginFormProps {
-  onSubmit: (data: LoginFormData) => void;
-}
-
-type LoginRequestFunction = (data: LoginFormData) => void;
+// type LoginRequestFunction = (data: LoginFormData) => void;
 
 export default function LoginForm({ onSubmit }: LoginFormProps): JSXNode {
   // Overly explicit

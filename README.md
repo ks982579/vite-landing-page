@@ -48,6 +48,7 @@ src:
 - [Youtube | FrontStart](https://youtu.be/FB-sKY63AWo?si=cSnLj_0cTrB0sdk4)
 - [Zenoo | MUI Theme Creator](https://zenoo.github.io/mui-theme-creator/)
 - [Youtuve | FrontStart Ultimate Guide](https://youtu.be/HsdjivqQ7BA?si=bR3_ODk8cM2_hzOf)
+- [Material Design Foundation | m3.material.io](https://m3.material.io/foundations)
 
 ### Axios
 
@@ -56,7 +57,24 @@ src:
 
 ### Cookies
 
+Firstly, I ruled out session storage because the logged-in state is deleted after closing the page.
+I spent time considering the trade-offs between using localstorage and cookies.
+Localstorage can be accessed by Javascript and is vulnerable to XSS.
+Given the token comes with an expiry time, I opted for using Cookies.
+Setting cookies in the browser is also vulnerable to XSS,
+but given practices of setting them on the server side and with flags like 'HTTPOnly',
+and 'SameSite=Strict'.
+
+- [SameSite Cookies Explained | Web.dev](https://web.dev/articles/samesite-cookies-explained)
 - [JS Cookie](https://www.npmjs.com/package/js-cookie)
+
+### Context Provider
+
+I considered Redux as the provider;
+however, because the context is not that complicated,
+I am settling for the built-in Context Provider.
+
+- [React Context TypeScript | LogRocket.com](https://blog.logrocket.com/how-to-use-react-context-typescript/)
 
 ## Expanding the ESLint configuration
 

@@ -1,39 +1,24 @@
 import React, {
   Dispatch,
-  // EffectCallback,
   JSX,
   SetStateAction,
   useEffect,
   useState,
 } from "react";
-import "./App.css";
-import {
-  Box,
-  Button,
-  Container,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
-// import axios, { AxiosResponse } from "axios";
-import postAuthRequest from "./services/authenticate";
+import { Container } from "@mui/material";
+import postAuthRequest from "@/services/authenticate";
 import Cookies from "js-cookie";
 import { NavigateFunction, useNavigate } from "react-router";
-import Navbar from "./components/Navbar";
-import LoginForm from "./features/auth/components/LoginForm";
+import Navbar from "@/components/Navbar";
+import LoginForm from "@/features/auth/components/LoginForm";
+import { LoginFormData } from "@/features/auth/types";
 
-// Used in Services...
-interface LoginFormData {
-  email: string;
-  password: string;
-}
+type LoginSetter = Dispatch<SetStateAction<boolean>>;
+type LoginRequestFunction = (data: LoginFormData) => void;
 
-interface LoginFormProps {
-  onSubmit: (data: LoginFormData) => void;
-}
-
-export default function App() {
-  const [loggedIn, setLoggedIn]: [boolean] = useState<boolean>(false);
+const HomePage: React.FC = (): JSX.Element => {
+  const [loggedIn, setLoggedIn]: [boolean, LoginSetter] =
+    useState<boolean>(false);
   let navigate: NavigateFunction = useNavigate();
 
   useEffect(() => {
@@ -65,12 +50,12 @@ export default function App() {
     }
   };
 
-  // TODO: Center the LoginForm
   return (
     <Container>
       <Navbar />
-      <h1>Welcome Home</h1>
       <LoginForm onSubmit={logInSubmit} />
     </Container>
   );
-}
+};
+
+export default HomePage;
