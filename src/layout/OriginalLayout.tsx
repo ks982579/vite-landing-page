@@ -1,8 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-import "./index.css";
-import AppRouter from "./AppRouter.tsx";
 import {
   createTheme,
   CssBaseline,
@@ -11,8 +7,7 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import { green } from "@mui/material/colors";
-import AuthProvider from "./context/AuthContext.tsx";
-import OriginalLayout from "./layout/OriginalLayout.tsx";
+import Navbar from "@/components/Navbar.tsx";
 
 // https://zenoo.github.io/mui-theme-creator/
 const normalThemeOptions: ThemeOptions = {
@@ -46,12 +41,17 @@ const normalThemeOptions: ThemeOptions = {
 };
 const normalTheme: Theme = createTheme(normalThemeOptions);
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <AuthProvider>
-    <OriginalLayout>
-      <BrowserRouter>
-        <AppRouter />
-      </BrowserRouter>
-    </OriginalLayout>
-  </AuthProvider>,
-);
+const OriginalLayout: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  return (
+    <ThemeProvider theme={normalTheme}>
+      <CssBaseline>
+        <Navbar />
+        {children}
+      </CssBaseline>
+    </ThemeProvider>
+  );
+};
+
+export default OriginalLayout;

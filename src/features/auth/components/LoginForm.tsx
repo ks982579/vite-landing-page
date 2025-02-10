@@ -42,7 +42,7 @@ export default function LoginForm({ onSubmit }: LoginFormProps): JSXNode {
   return (
     <Container maxWidth="sm">
       <Paper elevation={12} sx={{ p: 4, mt: 8, borderRadius: 3 }}>
-        <Typography variant="h4" component="h4" sx={{ border: 1 }}>
+        <Typography variant="h4" component="h4">
           Login
           <Box component="form" onSubmit={handleSubmit}>
             <TextField

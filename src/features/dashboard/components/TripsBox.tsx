@@ -4,7 +4,6 @@ import {
   Paper,
   Box,
   Typography,
-  Button,
   ListItem,
   Chip,
   ListItemButton,
@@ -12,7 +11,6 @@ import {
   ListItemText,
   Avatar,
   Collapse,
-  Divider,
   CircularProgress,
   List,
 } from "@mui/material";
@@ -47,54 +45,70 @@ const TripItem: React.FC<TripItemProps> = ({ data }) => {
     ? new Date(departureDate).toDateString()
     : "No Date";
 
-  // secondaryAction={
-  //   <Chip
-  //     label={`${data.flights.length} flight(s)`}
-  //     size="small"
-  //     color="secondary"
-  //   />
-  // }
   return (
-    <>
+    <Paper elevation={2} sx={{ m: 1 }}>
       <ListItem disablePadding>
         <ListItemButton onClick={() => setOpen((p) => !p)}>
-          <ListItemAvatar>
-            <Avatar>
-              <FlightTakeoff />
-            </Avatar>
-          </ListItemAvatar>
-          {/* Using span because cannot nest in p-tags */}
-          <ListItemText
-            primary={
-              <Typography variant="subtitle1" component="span">
-                {data.flights[0]?.originAirport} to{" "}
-                {data.flights[0]?.destinationAirport}
-              </Typography>
-            }
-            secondary={
-              <Box
-                component="span"
-                sx={{ display: "flex", alignItems: "center", gap: 1 }}
-              >
-                <CalendarToday fontSize="small" />
-                <Typography component="span" variant="body2">
-                  {formattedDate}
-                </Typography>
-              </Box>
-            }
-          />
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <Chip
-              label={`${data.flights.length} flight(s)`}
-              size="small"
-              color="primary"
-            />
-            {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              width: "100%",
+            }}
+          >
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <ListItemAvatar>
+                <Avatar>
+                  <FlightTakeoff />
+                </Avatar>
+              </ListItemAvatar>
+              {/* Using span because cannot nest in p-tags */}
+              <ListItemText
+                primary={
+                  <Typography variant="subtitle1" component="span">
+                    {data.flights[0]?.originAirport} to{" "}
+                    {data.flights[0]?.destinationAirport}
+                  </Typography>
+                }
+                secondary={
+                  <Box
+                    component="span"
+                    sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                  >
+                    <CalendarToday fontSize="small" />
+                    <Typography component="span" variant="body2">
+                      {formattedDate}
+                    </Typography>
+                  </Box>
+                }
+              />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                justifyContent: "end",
+              }}
+            >
+              <Chip
+                label={`${data.flights.length} flight(s)`}
+                size="small"
+                color="primary"
+              />
+              {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+            </Box>
           </Box>
         </ListItemButton>
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <Box sx={{ pl: 5, pr: 2, pb: 2 }}>
+        <Box sx={{ pl: 3, pr: 2, pb: 2 }}>
           {data.passengers && data.passengers.length > 0 && (
             <Box sx={{ mb: 2 }}>
               <Typography variant="subtitle2" color="primary">
@@ -102,7 +116,7 @@ const TripItem: React.FC<TripItemProps> = ({ data }) => {
               </Typography>
               {data.passengers.map((person) => (
                 <Box
-                  key={person.userId}
+                  key={person.passengerId}
                   sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
                 >
                   <AccountBox fontSize="small" />
@@ -143,8 +157,7 @@ const TripItem: React.FC<TripItemProps> = ({ data }) => {
             ))}
         </Box>
       </Collapse>
-      <Divider />
-    </>
+    </Paper>
   );
 };
 
@@ -183,8 +196,8 @@ export default function TripsBox(): React.JSX.Element {
       elevation={5}
       sx={{
         width: { xs: 1 },
-        maxHeight: { sm: "80vh" },
-        minHeight: { sm: "50vh" },
+        maxHeight: { md: "70vh" },
+        minHeight: { md: "50vh" },
         overflow: "scroll",
       }}
     >

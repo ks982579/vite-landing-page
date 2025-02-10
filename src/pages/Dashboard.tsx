@@ -1,20 +1,10 @@
-import { getPassengersData, getTripsData } from "@/services/userdata";
 import React, { useContext, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useNavigate, NavigateFunction } from "react-router";
-import { Box, Button, Container, Paper, Typography } from "@mui/material";
-import { deepPurple } from "@mui/material/colors";
-import axios, { AxiosResponse, AxiosError } from "axios";
-import { Result, Ok, Err } from "@/types/result";
-import { Passenger } from "@/types/passenger";
-import { Trip } from "@/types/trip";
-import { GenericResponseError } from "@/types";
+import { Box, Container, Typography } from "@mui/material";
 import PassengersBox from "@/features/dashboard/components/PassengersBox";
 import TripsBox from "@/features/dashboard/components/TripsBox";
-import AuthProvider, {
-  AuthContextType,
-  AuthContext,
-} from "@/context/AuthContext";
+import { AuthContextType, AuthContext } from "@/context/AuthContext";
 
 function Dashboard(): React.JSX.Element {
   // Check and Reroute to home screen
@@ -22,8 +12,6 @@ function Dashboard(): React.JSX.Element {
   // And conditionally loaded... or not
   const navigate: NavigateFunction = useNavigate();
   const user: AuthContextType = useContext(AuthContext) as AuthContextType;
-
-  // Check if they Have a cookie
 
   // TODO: Should be a protection thing
   useEffect(() => {
@@ -56,8 +44,8 @@ function Dashboard(): React.JSX.Element {
           gap: 3,
         }}
       >
-        <PassengersBox />
         <TripsBox />
+        <PassengersBox />
       </Box>
     </Container>
   );

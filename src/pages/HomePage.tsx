@@ -10,7 +10,6 @@ import { Container } from "@mui/material";
 import postAuthRequest from "@/services/authenticate";
 import Cookies from "js-cookie";
 import { NavigateFunction, useNavigate } from "react-router";
-import Navbar from "@/components/Navbar";
 import LoginForm from "@/features/auth/components/LoginForm";
 import { LoginFormData } from "@/features/auth/types";
 import { AuthContextType, AuthContext } from "@/context/AuthContext";
@@ -63,7 +62,6 @@ const HomePage: React.FC = (): JSX.Element => {
 
   return (
     <Container>
-      <Navbar />
       <LoginForm onSubmit={logInSubmit} />
     </Container>
   );

@@ -4,7 +4,7 @@ export interface PassengerList {
 
 export interface Passenger {
   passengerId: string;
-  userId: string;
+  userId: string; // Not unique
   name: string;
   surname: string;
   title: string | null;

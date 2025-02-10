@@ -76,6 +76,12 @@ I am settling for the built-in Context Provider.
 
 - [React Context TypeScript | LogRocket.com](https://blog.logrocket.com/how-to-use-react-context-typescript/)
 
+## Challenges
+
+1. Some code duplication in dashboard components.
+   I would have liked to similar component features, which would be a refactor story.
+2. I worked with MUI previously, but still found it challenging to determine the best component for each job.
+
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
