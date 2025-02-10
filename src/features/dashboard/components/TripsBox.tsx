@@ -19,6 +19,7 @@ import { Result, GenericResponseError } from "@/types";
 import { AxiosError, AxiosResponse } from "axios";
 import { AuthContextType, AuthContext } from "@/context/AuthContext";
 import {
+  AccountBox,
   CalendarToday,
   FlightLand,
   FlightTakeoff,
@@ -92,6 +93,28 @@ const TripItem: React.FC<TripItemProps> = ({ data }) => {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <Box sx={{ pl: 5, pr: 2, pb: 2 }}>
+          {data.passengers && data.passengers.length > 0 && (
+            <Box sx={{ mb: 2 }}>
+              <Typography variant="subtitle2" color="primary">
+                Trip Passengers:
+              </Typography>
+              {data.passengers.map((person) => (
+                <Box
+                  key={person.userId}
+                  sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+                >
+                  <AccountBox fontSize="small" />
+                  <Typography variant="body2">
+                    {person.title ?? ""}
+                    {person.title && " "}
+                    {person.name ?? ""}
+                    {person.name && " "}
+                    {person.surname ?? ""}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          )}
           {data.flights &&
             data.flights.map((flight, index) => (
               <Box key={flight.flightId} sx={{ mb: 2 }}>
@@ -154,7 +177,12 @@ export default function TripsBox(): React.JSX.Element {
   return (
     <Paper
       elevation={5}
-      sx={{ width: { xs: 1 }, maxHeight: { sm: 600 }, overflow: "auto" }}
+      sx={{
+        width: { xs: 1 },
+        maxHeight: { sm: "80vh" },
+        minHeight: { sm: "50vh" },
+        overflow: "scroll",
+      }}
     >
       {trips &&
         trips.map((trip) => {
