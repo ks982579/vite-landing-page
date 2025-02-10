@@ -1,5 +1,5 @@
 import { getPassengersData, getTripsData } from "@/services/userdata";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useNavigate, NavigateFunction } from "react-router";
 import { Box, Button, Container, Paper, Typography } from "@mui/material";
@@ -11,26 +11,31 @@ import { Trip } from "@/types/trip";
 import { GenericResponseError } from "@/types";
 import PassengersBox from "@/features/dashboard/components/PassengersBox";
 import TripsBox from "@/features/dashboard/components/TripsBox";
+import AuthProvider, {
+  AuthContextType,
+  AuthContext,
+} from "@/context/AuthContext";
 
 function Dashboard(): React.JSX.Element {
   // Check and Reroute to home screen
   // State of being loaded or not
   // And conditionally loaded... or not
-  // const navigate: NavigateFunction = useNavigate();
+  const navigate: NavigateFunction = useNavigate();
+  const user: AuthContextType = useContext(AuthContext) as AuthContextType;
+
+  // Check if they Have a cookie
 
   // TODO: Should be a protection thing
-  // useEffect(() => {
-  //   if (!Cookies.get("accessToken")) {
-  //     navigate("/");
-  //   } else {
-  //     const passengerPromise: Promise<
-  //       Result<AxiosResponse<Passenger>, AxiosError<GenericResponseError>>
-  //     > = getPassengersData();
-  //     const tripPromise: Promise<
-  //       Result<AxiosResponse<Trip>, AxiosError<GenericResponseError>>
-  //     > = getTripsData();
-  //   }
-  // }, []);
+  useEffect(() => {
+    // If not logged in, check the cookies
+    if (!user.isLoggedIn) {
+      if (!Cookies.get("accessToken")) {
+        navigate("/");
+      } else {
+        user.login();
+      }
+    }
+  }, [user.isLoggedIn]);
 
   // Probably also center horizontally on screen or something
   return (

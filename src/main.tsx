@@ -11,6 +11,7 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import { green } from "@mui/material/colors";
+import AuthProvider from "./context/AuthContext.tsx";
 
 // https://zenoo.github.io/mui-theme-creator/
 const normalThemeOptions: ThemeOptions = {
@@ -48,9 +49,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ThemeProvider theme={normalTheme}>
       <CssBaseline>
-        <BrowserRouter>
-          <AppRouter />
-        </BrowserRouter>
+        <AuthProvider>
+          <BrowserRouter>
+            <AppRouter />
+          </BrowserRouter>
+        </AuthProvider>
       </CssBaseline>
     </ThemeProvider>
   </React.StrictMode>,
