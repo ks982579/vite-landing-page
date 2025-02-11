@@ -23,27 +23,12 @@ interface LoginResponseData {
   userId: string;
 }
 
-// interface AxiosResponse {
-//   data: LoginResponseData;
-//   status: number;
-//   statusText: string;
-//   headers: any;
-//   config: any;
-//   request: XMLHttpRequest;
-// }
-
 // In AxiosError.response?.data...
 interface LoginErrorResponse {
   code: string;
   message: string;
   name: string;
 }
-
-// Used in <App />
-// interface LoginFormData {
-//   email: string;
-//   password: string;
-// }
 
 async function postAuthRequest(
   data: LoginFormData,
@@ -66,8 +51,6 @@ async function postAuthRequest(
           },
         }, // CONFIG
       );
-    console.log("OK Submission");
-    console.log(res);
 
     // TODO: Improve Security
     Cookies.set("accessToken", res.data.accessToken, {
@@ -75,14 +58,8 @@ async function postAuthRequest(
     });
 
     return Ok(res);
-
-    // console.log(res.data);
   } catch (error: unknown) {
     const err = error as AxiosError<LoginErrorResponse>;
-    console.error("Error Submission");
-    console.log(err);
-    console.log(err.response?.status);
-    console.log(err.response?.data.message);
 
     return Err(err);
   }

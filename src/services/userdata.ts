@@ -10,30 +10,21 @@ async function getDataFrom<T, E>(
   url: string,
   signal?: AbortSignal,
 ): Promise<Result<AxiosResponse<T>, AxiosError<E>>> {
-  console.log(`Making GET request to: ${url}`);
   try {
     const res: AxiosResponse<T> = await axios.get<T>(
       url,
       {
         headers: {
           "Content-Type": "application/json",
-          // API Key should be someone secret and not duplicated
           "x-api-key": secrets.apiKey,
           Authorization: `Bearer ${Cookies.get("accessToken")}`,
         },
         signal,
       }, // CONFIG
     );
-    console.log("OK Submission");
-    console.log(res);
-    console.log(res.data);
     return Ok(res);
   } catch (error: unknown) {
     const err = error as AxiosError<E>;
-    console.error("Error Submission");
-    console.log(err);
-    console.log(err.response?.status);
-    // console.log(err.response?.data.message);
     // Seems like the Cookie breaks before expiry?
     // Remove Cookie if expired
     if (err.response?.status === 401) {
