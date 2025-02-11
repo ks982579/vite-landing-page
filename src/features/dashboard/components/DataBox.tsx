@@ -71,9 +71,11 @@ export default function DataBox<T, E>({
       elevation={5}
       sx={{
         width: { xs: 1 },
-        maxHeight: { sm: "80vh" },
-        minHeight: { sm: "50vh" },
-        overflow: "scroll",
+        height: "auto",
+        overflow: "auto",
+        "@media (min-width: 900px) and (min-height: 700px)": {
+          height: "70vh",
+        },
       }}
     >
       {isLoading ? (
@@ -84,7 +86,7 @@ export default function DataBox<T, E>({
             alignItems: "center",
             height: "100%",
             width: "100%",
-            bgcolor: "rgba(255,255,255, 0.75)",
+            bgcolor: "rgba(200,200,200, 0.75)",
           }}
         >
           <CircularProgress size="20%" />

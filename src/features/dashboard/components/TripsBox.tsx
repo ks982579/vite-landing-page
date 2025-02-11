@@ -170,9 +170,7 @@ interface TripsBoxProps {
 
 // Use the <DataBox/> Component to pass data to here
 export default function TripsBox({ data }: TripsBoxProps): React.JSX.Element {
-  // const [trips, setTrips] = useState<Array<Trip> | null>(null);
   const trips = data?.trips;
-  // const [isLoading, setIsLoading] = useState(true);
   const user: AuthContextType = useContext(AuthContext) as AuthContextType;
 
   // useEffect(() => {

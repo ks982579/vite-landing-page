@@ -90,92 +90,46 @@ const PassengerItem: React.FC<PassengerItemProps> = ({ data }) => {
   );
 };
 
-interface PassengerBoxProps {
-  setIsLoading: () => void;
+interface PassengersBoxProps {
+  data?: {
+    passengers: Array<Passenger> | null;
+  };
 }
 
-export default function PassengersBox(): React.JSX.Element {
-  const [passengers, setPassengers] = useState<Array<Passenger> | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+export default function PassengersBox({
+  data,
+}: PassengersBoxProps): React.JSX.Element {
+  // const [passengers, setPassengers] = useState<Array<Passenger> | null>(null);
+  // const [isLoading, setIsLoading] = useState(true);
+  const passengers = data?.passengers;
   const user: AuthContextType = useContext(AuthContext) as AuthContextType;
 
-  // Make API Call HERE
-  useEffect(() => {
-    const controller = new AbortController();
-    if (user.isLoggedIn) {
-      (async () => {
-        const passengerRes: Result<
-          AxiosResponse<PassengerList>,
-          AxiosError<GenericResponseError>
-        > = await getPassengersData(controller.signal);
-
-        switch (passengerRes.type) {
-          case "ok":
-            setPassengers(passengerRes.value.data.passengers);
-            break;
-          case "err":
-            if (passengerRes.error.status === 401) {
-              user.logout();
-            } // else display error
-            break;
-        }
-        setIsLoading(false);
-      })();
-    }
-    return () => controller.abort();
-  }, [user.isLoggedIn]);
-
   // TODO: Duplicates code from TripsBox - must abstract
-  return (
-    <Paper
-      elevation={5}
-      sx={{
-        width: { xs: 1 },
-        maxHeight: { md: "70vh" },
-        minHeight: { md: "50vh" },
-        height: "auto",
-        overflow: "auto",
-      }}
-    >
-      {isLoading ? (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-            width: "100%",
-          }}
-        >
-          <CircularProgress size="20%" />
-        </Box>
-      ) : passengers && passengers.length > 0 ? (
-        <List disablePadding>
-          {passengers &&
-            passengers.map((person) => {
-              return <PassengerItem data={person} key={person.passengerId} />;
-            })}
-        </List>
-      ) : (
-        <Paper elevation={2} sx={{ m: 1 }}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 1,
-              m: 1,
-              px: 2,
-              py: 3,
-            }}
-          >
-            <AccountBox fontSize="large" />
-            <Typography variant="body1" color="textDisabled">
-              No Passengers Found
-            </Typography>
-          </Box>
-        </Paper>
-      )}
+  return passengers && passengers.length > 0 ? (
+    <List disablePadding>
+      {passengers &&
+        passengers.map((person) => {
+          return <PassengerItem data={person} key={person.passengerId} />;
+        })}
+    </List>
+  ) : (
+    <Paper elevation={2} sx={{ m: 1 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 1,
+          m: 1,
+          px: 2,
+          py: 3,
+        }}
+      >
+        <AccountBox fontSize="large" />
+        <Typography variant="body1" color="textDisabled">
+          No Passengers Found
+        </Typography>
+      </Box>
     </Paper>
   );
 }
