@@ -73,8 +73,11 @@ export default function DataBox<T, E>({
         width: { xs: 1 },
         height: "auto",
         overflow: "auto",
-        "@media (min-width: 900px) and (min-height: 700px)": {
+        "@media (min-width: 900px) and (min-height: 600px)": {
           height: "70vh",
+        },
+        "@media (min-width: 900px) and (min-height: 700px)": {
+          height: "65vh",
         },
       }}
     >
