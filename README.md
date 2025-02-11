@@ -44,6 +44,7 @@ src:
 ### TypeScript
 
 - [Using CLI | TypeScriptLang.org](https://www.typescriptlang.org/docs/handbook/compiler-options.html)
+- [React Clone Elements](https://stackoverflow.com/questions/42261783/how-to-assign-the-correct-typing-to-react-cloneelement-when-giving-properties-to)
 
 ### Material UI
 
@@ -83,7 +84,8 @@ I am settling for the built-in Context Provider.
 ## Challenges
 
 1. Some code duplication in dashboard components.
-   I would have liked to similar component features, which would be a refactor story.
+   I would have liked to abstract similar component features, which would be a refactor story.
+   Unfortunately, because the data returned by the API calls are slightly different, it is difficult to generalize.
 2. I worked with MUI previously, but still found it challenging to determine the best component for each job.
 3. Getting the Trips and Passenger Box components to resize properly based on screen size required troubleshooting.
 

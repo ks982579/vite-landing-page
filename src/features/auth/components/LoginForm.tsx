@@ -13,8 +13,6 @@ import {
 import { JSXNode } from "@/types";
 import { LoginFormData, LoginFormProps } from "../types";
 
-// type LoginRequestFunction = (data: LoginFormData) => void;
-
 export default function LoginForm({
   onSubmit,
   loadingState,

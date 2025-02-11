@@ -13,6 +13,7 @@ import {
   Collapse,
   CircularProgress,
   List,
+  LinearProgress,
 } from "@mui/material";
 import { getTripsData } from "@/services/userdata";
 import { Result, GenericResponseError } from "@/types";
@@ -161,90 +162,69 @@ const TripItem: React.FC<TripItemProps> = ({ data }) => {
   );
 };
 
-export default function TripsBox(): React.JSX.Element {
-  const [trips, setTrips] = useState<Array<Trip> | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+interface TripsBoxProps {
+  data?: {
+    trips: Array<Trip> | null;
+  };
+}
+
+// Use the <DataBox/> Component to pass data to here
+export default function TripsBox({ data }: TripsBoxProps): React.JSX.Element {
+  // const [trips, setTrips] = useState<Array<Trip> | null>(null);
+  const trips = data?.trips;
+  // const [isLoading, setIsLoading] = useState(true);
   const user: AuthContextType = useContext(AuthContext) as AuthContextType;
 
-  useEffect(() => {
-    const controller = new AbortController();
-    if (user.isLoggedIn) {
-      (async () => {
-        const tripRes: Result<
-          AxiosResponse<TripList>,
-          AxiosError<GenericResponseError>
-        > = await getTripsData(controller.signal);
+  // useEffect(() => {
+  //   const controller = new AbortController();
+  //   if (user.isLoggedIn) {
+  //     (async () => {
+  //       const tripRes: Result<
+  //         AxiosResponse<TripList>,
+  //         AxiosError<GenericResponseError>
+  //       > = await getTripsData(controller.signal);
+  //
+  //       switch (tripRes.type) {
+  //         case "ok":
+  //           setTrips(tripRes.value.data.trips);
+  //           break;
+  //         case "err":
+  //           if (tripRes.error.status === 401) {
+  //             user.logout();
+  //           } // else display error
+  //           break;
+  //       }
+  //       setIsLoading(false);
+  //     })();
+  //   }
+  //   return () => controller.abort();
+  // }, [user.isLoggedIn]);
 
-        switch (tripRes.type) {
-          case "ok":
-            setTrips(tripRes.value.data.trips);
-            break;
-          case "err":
-            if (tripRes.error.status === 401) {
-              user.logout();
-            } // else display error
-            break;
-        }
-        setIsLoading(false);
-      })();
-    }
-    return () => controller.abort();
-  }, [user.isLoggedIn]);
-
-  return (
-    <Paper
-      elevation={5}
-      sx={{
-        width: { xs: 1 },
-        // maxHeight: { md: "70vh" },
-        // minHeight: { md: "50vh" },
-        height: "auto",
-        overflow: "auto",
-        "@media (min-width: 900px) and (min-height: 700px)": {
-          height: "70vh",
-        },
-      }}
-    >
-      {isLoading ? (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-            width: "100%",
-            bgcolor: "rgba(255,255,255, 0.75)",
-          }}
-        >
-          <CircularProgress size="20%" />
-        </Box>
-      ) : trips && trips.length > 0 ? (
-        <List disablePadding>
-          {trips &&
-            trips.map((trip) => {
-              return <TripItem data={trip} key={trip.tripId} />;
-            })}
-        </List>
-      ) : (
-        <Paper elevation={2} sx={{ m: 1 }}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 1,
-              m: 1,
-              px: 2,
-              py: 3,
-            }}
-          >
-            <AccountBox fontSize="large" />
-            <Typography variant="body1" color="textDisabled">
-              No Trips Found
-            </Typography>
-          </Box>
-        </Paper>
-      )}
+  return trips && trips.length > 0 ? (
+    <List disablePadding>
+      {trips &&
+        trips.map((trip) => {
+          return <TripItem data={trip} key={trip.tripId} />;
+        })}
+    </List>
+  ) : (
+    <Paper elevation={2} sx={{ m: 1 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 1,
+          m: 1,
+          px: 2,
+          py: 3,
+        }}
+      >
+        <AccountBox fontSize="large" />
+        <Typography variant="body1" color="textDisabled">
+          No Trips Found
+        </Typography>
+      </Box>
     </Paper>
   );
 }

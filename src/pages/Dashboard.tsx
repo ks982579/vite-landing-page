@@ -5,6 +5,8 @@ import { Box, Container, Typography } from "@mui/material";
 import PassengersBox from "@/features/dashboard/components/PassengersBox";
 import TripsBox from "@/features/dashboard/components/TripsBox";
 import { AuthContextType, AuthContext } from "@/context/AuthContext";
+import DataBox from "@/features/dashboard/components/DataBox";
+import { getTripsData } from "@/services/userdata";
 
 function Dashboard(): React.JSX.Element {
   // Check and Reroute to home screen
@@ -51,7 +53,9 @@ function Dashboard(): React.JSX.Element {
           gap: 3,
         }}
       >
-        <TripsBox />
+        <DataBox apiRequest={getTripsData}>
+          <TripsBox />
+        </DataBox>
         <PassengersBox />
       </Box>
     </Container>

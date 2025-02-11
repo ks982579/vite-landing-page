@@ -94,7 +94,6 @@ const HomePage: React.FC = (): JSX.Element => {
             type: "unknown",
           });
         }
-        // unknown errror please try again later or contact system administrator
         break;
     }
   };

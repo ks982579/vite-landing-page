@@ -90,6 +90,10 @@ const PassengerItem: React.FC<PassengerItemProps> = ({ data }) => {
   );
 };
 
+interface PassengerBoxProps {
+  setIsLoading: () => void;
+}
+
 export default function PassengersBox(): React.JSX.Element {
   const [passengers, setPassengers] = useState<Array<Passenger> | null>(null);
   const [isLoading, setIsLoading] = useState(true);

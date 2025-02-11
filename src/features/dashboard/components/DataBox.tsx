@@ -1,64 +1,61 @@
-import { Trip, TripList } from "@/types/trip";
-import { useContext, useEffect, useState } from "react";
-import {
-  Paper,
-  Box,
-  Typography,
-  Button,
-  ListItem,
-  Chip,
-  ListItemButton,
-  ListItemAvatar,
-  ListItemText,
-  Avatar,
-  Collapse,
-  Divider,
-  CircularProgress,
-  List,
-} from "@mui/material";
-import { getTripsData } from "@/services/userdata";
-import { Result, GenericResponseError } from "@/types";
+import React, { useContext, useEffect, useState } from "react";
+import { Paper, Box, CircularProgress } from "@mui/material";
+import { Result } from "@/types";
 import { AxiosError, AxiosResponse } from "axios";
 import { AuthContextType, AuthContext } from "@/context/AuthContext";
-import {
-  AccountBox,
-  CalendarToday,
-  FlightLand,
-  FlightTakeoff,
-  KeyboardArrowDown,
-  KeyboardArrowUp,
-} from "@mui/icons-material";
 
-type GetDataFunction<T, E> = (
-  signal: AbortSignal,
-) => Promise<Result<AxiosResponse<T>, AxiosError<E>>>;
+type GetDataResult<T, E> = Result<AxiosResponse<T>, AxiosError<E>>;
+
+type GetDataResponse<T, E> = Promise<GetDataResult<T, E>>;
+
+type GetDataFunction<T, E> = (signal: AbortSignal) => GetDataResponse<T, E>;
 
 interface DataBoxProps<T, E> {
-  getData: GetDataFunction<T, E>;
+  apiRequest: GetDataFunction<T, E>;
+  children: React.ReactNode;
+}
+
+interface ChildProps<T> {
+  data: T | null;
 }
 
 export default function DataBox<T, E>({
-  getData,
+  apiRequest,
+  children,
 }: DataBoxProps<T, E>): React.JSX.Element {
-  const [trips, setTrips] = useState<Array<Trip> | null>(null);
+  // State
+  // T is going to be the list of events, Array<t>
+  const [items, setItems] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  // Context
   const user: AuthContextType = useContext(AuthContext) as AuthContextType;
+
+  const clonedChildren = React.Children.map<React.ReactNode, React.ReactNode>(
+    children,
+    (child) => {
+      if (React.isValidElement(child)) {
+        return React.cloneElement(child as React.ReactElement<ChildProps<T>>, {
+          data: items,
+        });
+      }
+    },
+  );
 
   useEffect(() => {
     const controller = new AbortController();
     if (user.isLoggedIn) {
       (async () => {
-        const tripRes: Result<
-          AxiosResponse<TripList>,
-          AxiosError<GenericResponseError>
-        > = await getData(controller.signal);
+        const itemRes: GetDataResult<T, E> = await apiRequest(
+          controller.signal,
+        );
 
-        switch (tripRes.type) {
+        // From the Result Type
+        switch (itemRes.type) {
           case "ok":
-            setTrips(tripRes.value.data.trips);
+            setItems(itemRes.value.data);
             break;
           case "err":
-            if (tripRes.error.status === 401) {
+            if (itemRes.error.status === 401) {
               user.logout();
             } // else display error
             break;
@@ -92,17 +89,8 @@ export default function DataBox<T, E>({
         >
           <CircularProgress size="20%" />
         </Box>
-      ) : trips && trips.length > 0 ? (
-        <List disablePadding>
-          {trips &&
-            trips.map((trip) => {
-              return <TripItem data={trip} key={trip.tripId} />;
-            })}
-        </List>
       ) : (
-        <Box sx={{ p: 3, textAlign: "center" }}>
-          <Typography>No Trips Found</Typography>
-        </Box>
+        <>{clonedChildren}</>
       )}
     </Paper>
   );
