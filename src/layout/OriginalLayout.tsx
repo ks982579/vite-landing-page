@@ -16,9 +16,6 @@ const normalThemeOptions: ThemeOptions = {
     primary: {
       main: green[600],
     },
-    // secondary: {
-    //   main: "#f50057",
-    // },
     background: {
       default: "#CBCBCB",
       paper: "#E5EAEA",
