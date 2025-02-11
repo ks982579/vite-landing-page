@@ -8,7 +8,6 @@ import React, {
 } from "react";
 import { Container } from "@mui/material";
 import postAuthRequest from "@/services/authenticate";
-import Cookies from "js-cookie";
 import { NavigateFunction, useNavigate } from "react-router";
 import LoginForm from "@/features/auth/components/LoginForm";
 import {
@@ -51,15 +50,16 @@ const HomePage: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     if (!user.isLoggedIn) {
-      if (Cookies.get("accessToken")) {
-        // Assuming cookie is OK
+      // Chrome does no support setting cookies
+      if (localStorage.getItem("accessToken")) {
+        // Assuming token is OK
         user.login();
         navigate("/dashboard");
       }
     } else {
-      // Double checking Cookie
-      if (Cookies.get("accessToken")) {
-        // Assuming cookie is OK
+      // Double checking local storage
+      if (localStorage.getItem("accessToken")) {
+        // Assuming storage is OK
         navigate("/dashboard");
       }
     }

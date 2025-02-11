@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import React, { createContext, useState } from "react";
 
 export type AuthContextType = {
@@ -23,7 +22,8 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = () => {
-    Cookies.remove("accessToken");
+    // Chrome does not support setting cookies.
+    localStorage.removeItem("accessToken");
     setLoginStatus(false);
   };
 

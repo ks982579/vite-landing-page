@@ -1,6 +1,5 @@
 // src/services/authenticate.ts
 import axios, { AxiosResponse, AxiosError } from "axios";
-import Cookies from "js-cookie";
 import { Result, Ok, Err } from "@/types/result";
 import { LoginFormData } from "@/features/auth/types";
 import { secrets } from "@/secrets";
@@ -52,10 +51,11 @@ async function postAuthRequest(
         }, // CONFIG
       );
 
+    // Chrome doesn't support setting Cookies
     // TODO: Improve Security
-    Cookies.set("accessToken", res.data.accessToken, {
-      expires: new Date(res.data.accessTokenExpiry * 1000),
-    });
+    console.log("setting access token");
+    localStorage.setItem("accessToken", res.data.accessToken);
+    console.log(localStorage.getItem("accessToken"));
 
     return Ok(res);
   } catch (error: unknown) {

@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import Cookies from "js-cookie";
 import { useNavigate, NavigateFunction } from "react-router";
 import { Box, Container, Typography } from "@mui/material";
 import PassengersBox from "@/features/dashboard/components/PassengersBox";
@@ -19,7 +18,7 @@ function Dashboard(): React.JSX.Element {
   useEffect(() => {
     // If not logged in, check the cookies
     if (!user.isLoggedIn) {
-      if (!Cookies.get("accessToken")) {
+      if (!localStorage.getItem("accessToken")) {
         navigate("/");
       } else {
         user.login();

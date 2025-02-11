@@ -1,5 +1,4 @@
 import axios, { AxiosResponse, AxiosError } from "axios";
-import Cookies from "js-cookie";
 import { Result, Ok, Err } from "@/types/result";
 import { PassengerList } from "@/types/passenger";
 import { TripList } from "@/types/trip";
@@ -17,7 +16,7 @@ async function getDataFrom<T, E>(
         headers: {
           "Content-Type": "application/json",
           "x-api-key": secrets.apiKey,
-          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
         signal,
       }, // CONFIG
@@ -28,7 +27,7 @@ async function getDataFrom<T, E>(
     // Seems like the Cookie breaks before expiry?
     // Remove Cookie if expired
     if (err.response?.status === 401) {
-      Cookies.remove("accessToken");
+      localStorage.removeItem("accessToken");
     }
     return Err(err);
   }
