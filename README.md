@@ -133,6 +133,10 @@ src:
 
 ### Cookies
 
+> I wrote this section before testing in Chrome.
+> Unfortunately, setting cookies did not work in Chrome, but it works in FireFox.
+> I had to (last-minute) revert to using localStorage.
+
 Firstly, I ruled out session storage because the logged-in state is deleted after closing the page.
 I spent time considering the trade-offs between using localstorage and cookies.
 Localstorage can be accessed by Javascript and is vulnerable to XSS.
