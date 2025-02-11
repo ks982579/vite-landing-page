@@ -14,6 +14,7 @@ import {
   CircularProgress,
   List,
   LinearProgress,
+  Alert,
 } from "@mui/material";
 import { getTripsData } from "@/services/userdata";
 import { Result, GenericResponseError } from "@/types";
@@ -35,16 +36,29 @@ interface TripItemProps {
 const TripItem: React.FC<TripItemProps> = ({ data }) => {
   const [open, setOpen] = useState(false);
 
-  // Earliest Departure Date
-  const departureDate = data.flights?.sort((a, b) => {
+  const flights = data.flights?.sort((a, b) => {
     const timeA = Date.parse(a.embarkDate);
     const timeB = Date.parse(b.embarkDate);
     return timeA - timeB;
-  })[0]?.embarkDate;
+  });
+
+  // Earliest Departure Date
+  const departureDate = flights[0]?.embarkDate;
+
+  const lastLanding = flights[flights.length - 1]?.arrivalDate;
+
+  console.log(lastLanding);
 
   const formattedDate = departureDate
     ? new Date(departureDate).toDateString()
     : "No Date";
+
+  const formatDateInfo = (dateString: string): string => {
+    const flightDate = new Date(dateString);
+    return flightDate
+      ? `${flightDate.toDateString()} at ${String(flightDate.getHours()).padStart(2, "0")}:${String(flightDate.getMinutes()).padStart(2, "0")}`
+      : "No flight information";
+  };
 
   return (
     <Paper elevation={2} sx={{ m: 1 }}>
@@ -110,6 +124,13 @@ const TripItem: React.FC<TripItemProps> = ({ data }) => {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <Box sx={{ pl: 3, pr: 2, pb: 2 }}>
+          {Date.now() < new Date(departureDate).getTime() ? (
+            <Alert severity="info">Upcoming Flight</Alert>
+          ) : Date.now() > new Date(lastLanding).getTime() ? (
+            <Alert severity="success">Trip Complete</Alert>
+          ) : (
+            <Alert severity="info">Trip In Progress</Alert>
+          )}
           {data.passengers && data.passengers.length > 0 && (
             <Box sx={{ mb: 2 }}>
               <Typography variant="subtitle2" color="primary">
@@ -132,8 +153,8 @@ const TripItem: React.FC<TripItemProps> = ({ data }) => {
               ))}
             </Box>
           )}
-          {data.flights &&
-            data.flights.map((flight, index) => (
+          {flights &&
+            flights.map((flight, index) => (
               <Box key={flight.flightId} sx={{ mb: 2 }}>
                 <Typography variant="subtitle2" color="primary">
                   Flight {index + 1}: {flight.flightNumber}
@@ -143,15 +164,16 @@ const TripItem: React.FC<TripItemProps> = ({ data }) => {
                 >
                   <FlightTakeoff fontSize="small" />
                   <Typography variant="body2">
-                    {flight.originAirport} ({flight.origin}) -{" "}
-                    {new Date(flight.embarkDate).toTimeString()}
+                    {flight.originAirport ?? ""} ({flight.origin ?? ""}) -{" "}
+                    {formatDateInfo(flight.embarkDate)}
                   </Typography>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   <FlightLand fontSize="small" />
                   <Typography variant="body2">
-                    {flight.destinationAirport} ({flight.destination}) -{" "}
-                    {new Date(flight.arrivalDate).toTimeString()}
+                    {flight.destinationAirport ?? ""} (
+                    {flight.destination ?? ""}) -{" "}
+                    {formatDateInfo(flight.arrivalDate)}
                   </Typography>
                 </Box>
               </Box>
@@ -170,33 +192,7 @@ interface TripsBoxProps {
 
 // Use the <DataBox/> Component to pass data to here
 export default function TripsBox({ data }: TripsBoxProps): React.JSX.Element {
-  const trips = data?.trips;
-  const user: AuthContextType = useContext(AuthContext) as AuthContextType;
-
-  // useEffect(() => {
-  //   const controller = new AbortController();
-  //   if (user.isLoggedIn) {
-  //     (async () => {
-  //       const tripRes: Result<
-  //         AxiosResponse<TripList>,
-  //         AxiosError<GenericResponseError>
-  //       > = await getTripsData(controller.signal);
-  //
-  //       switch (tripRes.type) {
-  //         case "ok":
-  //           setTrips(tripRes.value.data.trips);
-  //           break;
-  //         case "err":
-  //           if (tripRes.error.status === 401) {
-  //             user.logout();
-  //           } // else display error
-  //           break;
-  //       }
-  //       setIsLoading(false);
-  //     })();
-  //   }
-  //   return () => controller.abort();
-  // }, [user.isLoggedIn]);
+  let trips = data?.trips;
 
   return trips && trips.length > 0 ? (
     <List disablePadding>

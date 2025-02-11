@@ -96,6 +96,7 @@ interface PassengersBoxProps {
   };
 }
 
+// Use the <DataBox/> Component to pass data to here
 export default function PassengersBox({
   data,
 }: PassengersBoxProps): React.JSX.Element {
