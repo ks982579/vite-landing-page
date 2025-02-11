@@ -7,11 +7,15 @@ export type AuthContextType = {
   logout: () => void;
 };
 
-export const AuthContext = createContext<AuthContextType | null>(null);
+const defaultValue: AuthContextType = {
+  isLoggedIn: false,
+  login: () => {},
+  logout: () => {},
+};
 
-const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const AuthContext = createContext<AuthContextType>(defaultValue);
+
+function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loginStatus, setLoginStatus] = useState<boolean>(false);
 
   const login = () => {
@@ -34,6 +38,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
 export default AuthProvider;
