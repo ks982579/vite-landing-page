@@ -20,8 +20,8 @@ const normalThemeOptions: ThemeOptions = {
     //   main: "#f50057",
     // },
     background: {
-      default: "#AAAAAA",
-      paper: "#FAFAFA",
+      default: "#CBCBCB",
+      paper: "#E5EAEA",
     },
   },
   typography: {

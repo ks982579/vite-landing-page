@@ -29,12 +29,19 @@ function Dashboard(): React.JSX.Element {
   return (
     <Container>
       <Typography
-        variant="h1"
-        sx={{ my: 2, textAlign: "center", color: "secondary.main" }}
+        variant="h4"
+        sx={{
+          my: 1,
+          textAlign: "start",
+          color: "primary.main",
+          fontWeight: { xs: 600, sm: 800 },
+        }}
       >
-        Your Info
+        Your Travel Plans
       </Typography>
-      <Typography variant="h2">Overview</Typography>
+      <Typography variant="subtitle1" color="textSecondary">
+        Review and track your flights
+      </Typography>
       <Box
         sx={{
           pt: 1,

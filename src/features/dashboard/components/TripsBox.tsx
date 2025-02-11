@@ -64,8 +64,8 @@ const TripItem: React.FC<TripItemProps> = ({ data }) => {
               }}
             >
               <ListItemAvatar>
-                <Avatar>
-                  <FlightTakeoff />
+                <Avatar sx={{ bgcolor: "black" }}>
+                  <FlightTakeoff sx={{ bgcolor: "white", color: "black" }} />
                 </Avatar>
               </ListItemAvatar>
               {/* Using span because cannot nest in p-tags */}
@@ -196,9 +196,13 @@ export default function TripsBox(): React.JSX.Element {
       elevation={5}
       sx={{
         width: { xs: 1 },
-        maxHeight: { md: "70vh" },
-        minHeight: { md: "50vh" },
-        overflow: "scroll",
+        // maxHeight: { md: "70vh" },
+        // minHeight: { md: "50vh" },
+        height: "auto",
+        overflow: "auto",
+        "@media (min-width: 900px) and (min-height: 700px)": {
+          height: "70vh",
+        },
       }}
     >
       {isLoading ? (
@@ -222,9 +226,24 @@ export default function TripsBox(): React.JSX.Element {
             })}
         </List>
       ) : (
-        <Box sx={{ p: 3, textAlign: "center" }}>
-          <Typography>No Trips Found</Typography>
-        </Box>
+        <Paper elevation={2} sx={{ m: 1 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 1,
+              m: 1,
+              px: 2,
+              py: 3,
+            }}
+          >
+            <AccountBox fontSize="large" />
+            <Typography variant="body1" color="textDisabled">
+              No Trips Found
+            </Typography>
+          </Box>
+        </Paper>
       )}
     </Paper>
   );

@@ -38,8 +38,8 @@ const PassengerItem: React.FC<PassengerItemProps> = ({ data }) => {
       <ListItem disablePadding>
         <ListItemButton onClick={() => setOpen((p) => !p)}>
           <ListItemAvatar>
-            <Avatar>
-              <AccountBox />
+            <Avatar sx={{ bgcolor: "black" }}>
+              <AccountBox sx={{ bgcolor: "white", color: "black" }} />
             </Avatar>
           </ListItemAvatar>
           {/* Using span because cannot nest in p-tags */}
@@ -86,7 +86,6 @@ const PassengerItem: React.FC<PassengerItemProps> = ({ data }) => {
           </Box>
         </Box>
       </Collapse>
-      <Divider />
     </Paper>
   );
 };
@@ -130,7 +129,8 @@ export default function PassengersBox(): React.JSX.Element {
         width: { xs: 1 },
         maxHeight: { md: "70vh" },
         minHeight: { md: "50vh" },
-        overflow: "scroll",
+        height: "auto",
+        overflow: "auto",
       }}
     >
       {isLoading ? (
@@ -141,7 +141,6 @@ export default function PassengersBox(): React.JSX.Element {
             alignItems: "center",
             height: "100%",
             width: "100%",
-            bgcolor: "rgba(255,255,255, 0.75)",
           }}
         >
           <CircularProgress size="20%" />
@@ -154,9 +153,24 @@ export default function PassengersBox(): React.JSX.Element {
             })}
         </List>
       ) : (
-        <Box sx={{ p: 3, textAlign: "center" }}>
-          <Typography>No Trips Found</Typography>
-        </Box>
+        <Paper elevation={2} sx={{ m: 1 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 1,
+              m: 1,
+              px: 2,
+              py: 3,
+            }}
+          >
+            <AccountBox fontSize="large" />
+            <Typography variant="body1" color="textDisabled">
+              No Passengers Found
+            </Typography>
+          </Box>
+        </Paper>
       )}
     </Paper>
   );
