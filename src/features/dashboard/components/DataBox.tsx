@@ -1,5 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Paper, Box, CircularProgress } from "@mui/material";
+import {
+  Paper,
+  Box,
+  CircularProgress,
+  Alert,
+  AlertTitle,
+  Typography,
+} from "@mui/material";
 import { Result } from "@/types";
 import { AxiosError, AxiosResponse } from "axios";
 import { AuthContextType, AuthContext } from "@/context/AuthContext";
@@ -12,6 +19,7 @@ type GetDataFunction<T, E> = (signal: AbortSignal) => GetDataResponse<T, E>;
 
 interface DataBoxProps<T, E> {
   apiRequest: GetDataFunction<T, E>;
+  title: string;
   children: React.ReactNode;
 }
 
@@ -21,12 +29,14 @@ interface ChildProps<T> {
 
 export default function DataBox<T, E>({
   apiRequest,
+  title,
   children,
 }: DataBoxProps<T, E>): React.JSX.Element {
   // State
   // T is going to be the list of events, Array<t>
   const [items, setItems] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setError] = useState(false);
   // Context
   const user: AuthContextType = useContext(AuthContext) as AuthContextType;
 
@@ -57,7 +67,9 @@ export default function DataBox<T, E>({
           case "err":
             if (itemRes.error.status === 401) {
               user.logout();
-            } // else display error
+            } else {
+              setError(true);
+            }
             break;
         }
         setIsLoading(false);
@@ -81,7 +93,10 @@ export default function DataBox<T, E>({
         },
       }}
     >
-      {isLoading ? (
+      <Typography variant="h5" sx={{ mx: 2, my: 2 }}>
+        {title}
+      </Typography>
+      {isLoading && !isError ? (
         <Box
           sx={{
             display: "flex",
@@ -89,11 +104,33 @@ export default function DataBox<T, E>({
             alignItems: "center",
             height: "100%",
             width: "100%",
-            bgcolor: "rgba(200,200,200, 0.75)",
+            pb: 2,
           }}
         >
           <CircularProgress size="20%" />
         </Box>
+      ) : isError ? (
+        <Paper elevation={2} sx={{ m: 1 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 1,
+              m: 1,
+              px: 2,
+              py: 3,
+            }}
+          >
+            <Alert severity="error">
+              <AlertTitle>Error</AlertTitle>
+              <Typography>
+                Issue Retrieving data. Please try again later or contact an
+                Administrator.
+              </Typography>
+            </Alert>
+          </Box>
+        </Paper>
       ) : (
         <>{clonedChildren}</>
       )}

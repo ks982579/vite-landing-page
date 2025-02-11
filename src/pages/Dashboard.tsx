@@ -52,10 +52,10 @@ function Dashboard(): React.JSX.Element {
           gap: 3,
         }}
       >
-        <DataBox apiRequest={getTripsData}>
+        <DataBox apiRequest={getTripsData} title="Trips">
           <TripsBox />
         </DataBox>
-        <DataBox apiRequest={getPassengersData}>
+        <DataBox apiRequest={getPassengersData} title="Passengers">
           <PassengersBox />
         </DataBox>
       </Box>

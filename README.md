@@ -111,7 +111,6 @@ src:
 - Axios = `axios`
 - TypeScript = `typescript` `typescript-eslint`
 - Material UI = `@mui/material` `@emotion/styled` `@emotion/react` `@mui/icons-material`
-- JS-Cookie = `@types/js-cookie`
 
 ### TypeScript
 

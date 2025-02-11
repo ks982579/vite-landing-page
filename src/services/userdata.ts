@@ -48,7 +48,7 @@ export async function getTripsData(
   signal: AbortSignal,
 ): Promise<Result<AxiosResponse<TripList>, AxiosError<GenericResponseError>>> {
   return getDataFrom<TripList, GenericResponseError>(
-    `${secrets.apiEndpoint}v1/travel/trips`,
+    `${secrets.apiEndpoint}v1/travel/trips/`,
     signal,
   );
 }
