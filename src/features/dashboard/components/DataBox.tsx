@@ -107,7 +107,13 @@ export default function DataBox<T, E>({
             pb: 2,
           }}
         >
-          <CircularProgress size="20%" />
+          <CircularProgress
+            size={"20%"}
+            sx={{
+              p: 2,
+              m: 3,
+            }}
+          />
         </Box>
       ) : isError ? (
         <Paper elevation={2} sx={{ m: 1 }}>
