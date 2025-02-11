@@ -3,6 +3,7 @@ import axios, { AxiosResponse, AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { Result, Ok, Err } from "@/types/result";
 import { LoginFormData } from "@/features/auth/types";
+import { secrets } from "@/secrets";
 
 interface User {
   read: boolean;
@@ -52,16 +53,16 @@ async function postAuthRequest(
   try {
     const res: AxiosResponse<LoginResponseData> =
       await axios.post<LoginResponseData>(
-        "https://sandbox.blinkapi.co/v1/platform/user/login", // URL
+        `${secrets.apiEndpoint}v1/platform/user/login`,
         {
           emailAddress: data.email,
           password: data.password,
-          partnerId: "blink-travel-new",
+          partnerId: secrets.partnerId,
         }, // DATA
         {
           headers: {
             "Content-Type": "application/json",
-            "x-api-key": "Zgz4NhoIqZ1PJ6vw49K9N9hdWB7dGnWD29kXxg7X",
+            "x-api-key": secrets.apiKey,
           },
         }, // CONFIG
       );

@@ -7,3 +7,11 @@ export interface GenericResponseError {
 }
 
 export type JSXNode = JSX.Element | null;
+
+// This is for the file 'secrets.ts' in root folder.
+// NOTE: In production - Backend should hold this data.
+export interface AppConfig {
+  partnerId: string;
+  apiKey: string;
+  apiEndpoint: string;
+}

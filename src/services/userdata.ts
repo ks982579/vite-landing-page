@@ -1,9 +1,10 @@
 import axios, { AxiosResponse, AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { Result, Ok, Err } from "@/types/result";
-import { Passenger, PassengerList } from "@/types/passenger";
-import { Trip, TripList } from "@/types/trip";
+import { PassengerList } from "@/types/passenger";
+import { TripList } from "@/types/trip";
 import { GenericResponseError } from "@/types";
+import { secrets } from "@/secrets";
 
 async function getDataFrom<T, E>(
   url: string,
@@ -17,7 +18,7 @@ async function getDataFrom<T, E>(
         headers: {
           "Content-Type": "application/json",
           // API Key should be someone secret and not duplicated
-          "x-api-key": "Zgz4NhoIqZ1PJ6vw49K9N9hdWB7dGnWD29kXxg7X",
+          "x-api-key": secrets.apiKey,
           Authorization: `Bearer ${Cookies.get("accessToken")}`,
         },
         signal,
@@ -48,7 +49,7 @@ export async function getPassengersData(
   Result<AxiosResponse<PassengerList>, AxiosError<GenericResponseError>>
 > {
   return getDataFrom<PassengerList, GenericResponseError>(
-    "https://sandbox.blinkapi.co/v1/travel/passengers",
+    `${secrets.apiEndpoint}v1/travel/passengers/`,
     signal,
   );
 }
@@ -57,7 +58,7 @@ export async function getTripsData(
   signal: AbortSignal,
 ): Promise<Result<AxiosResponse<TripList>, AxiosError<GenericResponseError>>> {
   return getDataFrom<TripList, GenericResponseError>(
-    "https://sandbox.blinkapi.co/v1/travel/trips",
+    `${secrets.apiEndpoint}v1/travel/trips`,
     signal,
   );
 }
