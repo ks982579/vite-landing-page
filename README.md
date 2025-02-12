@@ -16,12 +16,8 @@ Additionally, the dependencies stopped registering after some time.
 
 With luck, a preview will spawn automatically in CodeSandBox.io,
 from [this link to the environment](https://codesandbox.io/p/github/ks982579/vite-landing-page/main).
-If it does not, you should be able to open a terminal in the VSCode-like environment,
-and type the following command:
-
-```bash
-npm run dev
-```
+If it does not, there is a "Previews" icon on the left side-bar.
+The preview "5173 dev" pulls up the landing page in the preview window from port 5173.
 
 A popup should appear to open a preview at `http://localhost:5173`.
 
@@ -45,6 +41,9 @@ So running the following will check for compiler errors / warnings:
 npm run typecheck
 ```
 
+Running commands on the code may require forking the repo in CodeSandBox,
+or cloning it locally and running the command.
+
 ### Locally
 
 You should be able to run the following commands in your terminal,
@@ -64,7 +63,8 @@ Navigate to `http://localhost:5173`.
 
 ## Challenges
 
-This project was enjoyable for the most part.
+This project was both enjoyable and a learning experience.
+It was good practice for Typescript on the frontend and I also did a lot of research into Material UI (MUI).
 
 The biggest challenge was getting the project to work correctly in CodeSandBox.io.
 Having built the project in my NeoVim editor using my WSL environment,
@@ -74,10 +74,9 @@ I eventually figured out how to import from a Github repo, allowing the project 
 
 Other challenges include:
 
-- Some code duplication in dashboard components.
-  I would have liked to abstract similar component features, which would be a refactor story.
-  Unfortunately, because the data returned by the API calls are slightly different, it is difficult to generalize.
-- I worked with MUI previously (mostly for icons), but still found it challenging to determine the best component for each job.
+- Some code duplication in may still exist in the dashboard components.
+- Passing props to children in components following Typescript types.
+- I worked with MUI previously (mostly for icons), but found it challenging to determine the best component for each job.
 - Getting the Trips and Passenger Box components to resize properly based on screen size required troubleshooting.
 - Knowing the best information to provide to the user, what would be most valuable to them.
 
@@ -135,7 +134,7 @@ src:
 
 > I wrote this section before testing in Chrome.
 > Unfortunately, setting cookies did not work in Chrome, but it works in FireFox.
-> I had to (last-minute) revert to using localStorage.
+> I decided to switch to using localStorage to avoid issues with cookies.
 
 Firstly, I ruled out session storage because the logged-in state is deleted after closing the page.
 I spent time considering the trade-offs between using localstorage and cookies.
@@ -155,50 +154,3 @@ however, because the context is not that complicated,
 I am settling for the built-in Context Provider.
 
 - [React Context TypeScript | LogRocket.com](https://blog.logrocket.com/how-to-use-react-context-typescript/)
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from "eslint-plugin-react";
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: "18.3" } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs["jsx-runtime"].rules,
-  },
-});
-```
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
