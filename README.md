@@ -2,8 +2,8 @@
 
 This is a React and Typescript project.
 The goal was to design a landing page to log into a travel account and view your details.
-
-There is a command in the
+Details include Trip and Passenger information.
+Trips are composed on Flights.
 
 ## Controls
 
@@ -74,7 +74,7 @@ I eventually figured out how to import from a Github repo, allowing the project 
 
 Other challenges include:
 
-- Some code duplication in may still exist in the dashboard components.
+- Some code duplication may still exist in the dashboard components.
 - Passing props to children in components following Typescript types.
 - I worked with MUI previously (mostly for icons), but found it challenging to determine the best component for each job.
 - Getting the Trips and Passenger Box components to resize properly based on screen size required troubleshooting.
@@ -94,7 +94,7 @@ src:
   - layouts: "page layouts - currently only one."
   - pages: "pages of application."
   - services: "Folder to hold API requests."
-  - testing: "rest-related mocks and such - No tests unfortunately."
+  - testing: "Tests to be Implemented."
   - types: "TS type definitions."
   - utils: "Contains shared utility functions - Not Required (yet)."
 ```
