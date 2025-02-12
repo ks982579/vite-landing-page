@@ -26,6 +26,16 @@ const normalThemeOptions: ThemeOptions = {
       fontWeight: 600,
     },
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      // decreasing md
+      md: 800,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
   components: {
     MuiPaper: {
       styleOverrides: {
